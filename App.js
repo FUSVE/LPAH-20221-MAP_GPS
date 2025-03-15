@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import MapView, {Marker} from 'react-native-maps';
 import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import * as Location from 'expo-location';
+import MapView, { Marker } from 'react-native-maps';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -21,6 +22,7 @@ export default function App() {
     })();
   }, []);
 
+
   let text = 'Aguarde...';
   if (errorMsg) {
     text = errorMsg;
@@ -30,6 +32,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="auto" hidden />
       <MapView loadingEnabled={true}
         region={
           !location ?
@@ -49,25 +52,25 @@ export default function App() {
         style={styles.map}
       >
         <Marker coordinate={
-           !location ?
-           {
-             latitude: 0,
-             longitude: 0,
-             latitudeDelta: 0,
-             longitudeDelta: 1000,
-           } :
-           {
-             latitude: location.latitude,
-             longitude: location.longitude,
-             latitudeDelta: 0.005,
-             longitudeDelta: 0.005,
-           }
+          !location ?
+            {
+              latitude: 0,
+              longitude: 0,
+              latitudeDelta: 0,
+              longitudeDelta: 1000,
+            } :
+            {
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: 0.005,
+              longitudeDelta: 0.005,
+            }
         }
-        title="Eu estou aqui!"
-        description='Nosso local de aula.'
+          title="Eu estou aqui!"
+          description='Nosso local de aula.'
         />
       </MapView>
-      <Text style={styles.paragraph}>{text}</Text>
+      <Text>{text}</Text>
     </View>
   );
 }
@@ -81,6 +84,6 @@ const styles = StyleSheet.create({
   },
   map: {
     width: "100%",
-    height: "80%",
+    height: "100%",
   },
 });
